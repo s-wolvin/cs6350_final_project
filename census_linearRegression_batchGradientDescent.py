@@ -50,7 +50,7 @@ labels = ['age','workclass','fnlwgt','education','educationNum','maritalStatus',
           'capitalLoss','hoursPerWeek','nativeCountry','incomeGt50']
 
 # learning rate
-r = 0.000089
+r = 0.00011
 
 # number of iterations
 T = 500
@@ -130,21 +130,32 @@ def main():
     prdctn_test     = np.zeros([np.shape(testData)[0]])
     
     for idx in range(np.shape(trainData)[0]):
-        prdctn_train[idx] = round(np.dot(w_matrix[:,tx+1], trainData[idx,range(6)]))
-    
+        if np.dot(w_matrix[:,tx+1], trainData[idx,range(6)]) > 0.5:
+            prdctn_train[idx] = 1
+        else: 
+           prdctn_train[idx] = 0 
+
     for idx in range(np.shape(testData)[0]):
-        prdctn_test[idx] = round(np.dot(w_matrix[:,tx+1], testData[idx,:]))
+        if np.dot(w_matrix[:,tx+1], testData[idx,:]) > 0.5:
+            prdctn_test[idx] = 1
+        else:
+            prdctn_test[idx] = 0
     
     error = sum(abs(prdctn_train - trainData[idx,6])) / np.shape(trainData)[0]
-        
+    
+    pd.concat([pd.DataFrame(prdctn_train)]).to_csv(
+        'census_train_linearRegression_outcome.csv', index = True, header = True)
+    
+    pd.concat([pd.DataFrame(prdctn_test)]).to_csv(
+            'cenus_test_linearRegression_outcome.csv', index = True, header = True)
+    
     ### Plot Cost Function
     plt.plot(range(T), cost_func)
     plt.title('Cost Function VS Iterations for Training Data, rate: ' + str(r))
     plt.ylabel('Cost Function')
     plt.xlabel('Iterations')
     plt.grid()
-    plt.show
-    # plt.savefig('cost_vs_iterations_4a.png', dpi = 300)
+    plt.savefig('cost_vs_iterations_4a.png', dpi = 300)
     
     print('Final Cost Value: ' + str(cost_func[tx]))
     # print('Test Cost Value: ' + str(test_cost_function))
