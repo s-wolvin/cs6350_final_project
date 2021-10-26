@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 #%% Variable presets
 
 data_file = 'train_final'
-numIterations = 18
+numIterations = 28
 
 
 
@@ -60,19 +60,40 @@ error = error / np.shape(bagged)[0]
 
 
 
-
 #%% plot
 
 fig = plt.figure()
 plt.plot(range(0,numIterations), error)
 plt.xlabel('Number of Bagged Trees')
 plt.ylabel('Prediction Error')
-plt.title('Precition Error VS Number of Bagged Trees')
-plt.legend()
+plt.title('Precition Error VS Number of Random Bagged Trees')
 plt.grid()
 plt.show()
 
 fig.savefig('error_bagged.png', dpi=300)
+
+
+
+
+#%% save final test outcome
+
+bagged_test = pd.read_csv('census_test_baggedTrees_outcome__attrSubset_2_500.csv', sep=',', 
+                                          header=0, index_col=0)
+bagged_test = bagged_test.to_numpy()
+bagged_test = bagged_test[:, range(numIterations)]
+
+
+outcome = np.zeros((np.shape(bagged_test)[0]))
+for row in range(np.shape(bagged_test)[0]):
+    xx = bagged_test[row, :]
+    labels, count = np.unique(xx[~np.isnan(xx)], return_counts=1)
+    outcome[row] = labels[np.argmax(count)]
+
+
+pd.concat([pd.DataFrame(outcome)]).to_csv('census_test_outcome_attrSubset_2_itertations_' + str(numIterations) + '.csv', index = True, header = True)
+
+
+
 
 
 
