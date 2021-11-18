@@ -128,14 +128,3 @@ fig2.savefig('error_diff.png', dpi=300)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
