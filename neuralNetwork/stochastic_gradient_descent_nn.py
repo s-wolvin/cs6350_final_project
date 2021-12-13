@@ -41,9 +41,9 @@ elif width == 25:
     lr_0 = 0.0007
     
 elif width == 50:
-    depth = 5
+    depth = 10
     # lr_0 = 0.0000009
-    lr_0 = 0.0001
+    lr_0 = 0.000001
     
 elif width == 100:
     depth = 4
