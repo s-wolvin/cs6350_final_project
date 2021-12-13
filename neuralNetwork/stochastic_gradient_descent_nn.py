@@ -43,7 +43,7 @@ elif width == 25:
 elif width == 50:
     depth = 10
     # lr_0 = 0.0000009
-    lr_0 = 0.000001
+    lr_0 = 0.0000015
     
 elif width == 100:
     depth = 4
@@ -257,11 +257,14 @@ while (min_epoch > count or np.sum(grad) < -0.10) and max_epoch > count:
 
 #%% Plot Prediction Loss
 
+fig = plt.figure()
 plt.plot(L)
 plt.ylabel('Prediction Loss')
 plt.xlabel('Iteration')
 plt.title('Prediction Loss as Iteration Increases')
 plt.show()
+
+fig.savefig('prediction_loss.png', dpi=300)
 
 
 
@@ -281,8 +284,8 @@ for ex in range(np.shape(X_test)[0]):
     y, _ = forward_prop(X_test_ex, z_layer)
     test_predict[ex] = y
 
-# test_error = np.sum(np.sign(test_predict) != Y_test) / np.shape(Y_test)[0]
-# print('Test Error: ' + str(test_error))
+pd.concat([pd.DataFrame(test_predict)]).to_csv('census_test_outcome_neural_network.csv', index = True, header = True)
+
 
 
 
