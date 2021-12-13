@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 #%% Variable presets
 
 data_file = 'train_final'
-numIterations = 28
+numIterations = 315
 
 
 
