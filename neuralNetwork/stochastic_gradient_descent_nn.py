@@ -43,7 +43,7 @@ elif width == 25:
 elif width == 50:
     depth = 10
     # lr_0 = 0.0000009
-    lr_0 = 0.0000015
+    lr_0 = 0.0000001
     
 elif width == 100:
     depth = 4
@@ -282,7 +282,9 @@ for ex in range(np.shape(X_test)[0]):
     # Forward Propagation
     z_layer = {}
     y, _ = forward_prop(X_test_ex, z_layer)
-    test_predict[ex] = y
+    test_predict[ex] = np.sign(y)
+
+test_predict[test_predict == -1] = 0
 
 pd.concat([pd.DataFrame(test_predict)]).to_csv('census_test_outcome_neural_network.csv', index = True, header = True)
 
